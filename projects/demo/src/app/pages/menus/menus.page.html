@@ -1,0 +1,183 @@
+<div class="content-header">
+  <h1 class="content-title">Menu</h1>
+  <p class="content-description">
+    A floating list of actions or options, opened from a trigger (button, icon, or nav item) or used as a context
+    menu. Items can group under labels, carry a leading icon, and show a trailing element (count text, icon, tag, or
+    switch). Six item states — default, hover, pressed, selected, focused, disabled — plus full RTL. Modeled on Figma
+    frames 30195:22214 (Menu) and 30195:21865 (Menu list item).
+  </p>
+</div>
+
+<demo-live
+  heading="Menu"
+  description="A group of menu items inside the popover container. Switch the trailing element and item state to explore the variants."
+  [rtl]="rtl()"
+>
+  <dga-menu [rtl]="rtl()" [attr.dir]="rtl() ? 'rtl' : null" [aria-label]="labels().group">
+    <dga-menu-group [label]="labels().group" selectable [(value)]="liveValue">
+      @for (i of liveItems; track i) {
+        <dga-menu-item icon="file-01" [value]="i" [checkmark]="false" [trailText]="trail() === 'text' ? '+99' : ''" [disabled]="state() === 'disabled' && i === 2">
+          {{ labels().item }}
+          @if (trail() === 'icon') {
+            <span dgaMenuTrailIcon>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M5 10h10M11 6l4 4-4 4" />
+              </svg>
+            </span>
+          }
+          @if (trail() === 'check') {
+            <span dgaMenuTrailIcon>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M4 10l4 4 8-8" />
+              </svg>
+            </span>
+          }
+          @if (trail() === 'tag') {
+            <span dgaMenuTrail><dga-tag variant="neutral" size="sm">{{ labels().tag }}</dga-tag></span>
+          }
+          @if (trail() === 'switch') {
+            <dga-menu-switch [checked]="true" [aria-label]="labels().item" />
+          }
+        </dga-menu-item>
+      }
+    </dga-menu-group>
+  </dga-menu>
+
+  <demo-switch label="RTL" [(checked)]="rtl" />
+  <demo-select label="Trailing" [options]="trails" [value]="trail()" (valueChange)="setTrail($event)" />
+  <demo-select label="State" [options]="states" [value]="state()" (valueChange)="setState($event)" />
+</demo-live>
+
+<demo-props
+  description="Inputs, outputs and models of the menu components: dga-menu, dga-menu-anchor, dga-menu-group, dga-menu-item, dga-menu-divider and dga-menu-switch."
+  [props]="menuProps"
+/>
+
+<demo-showcase
+  heading="Anatomy"
+  description="The popover container holding a group label and a set of menu items, each with a leading icon and a label."
+>
+  <dga-menu aria-label="Anatomy">
+    <dga-menu-group label="Group label">
+      <dga-menu-item icon="file-01">Item Label</dga-menu-item>
+      <dga-menu-item icon="file-01">Item Label</dga-menu-item>
+      <dga-menu-item icon="file-01">Item Label</dga-menu-item>
+    </dga-menu-group>
+  </dga-menu>
+</demo-showcase>
+
+<demo-showcase
+  heading="Item States"
+  description="Per Figma 30195:21865: default, hover (gray fill), pressed (darker gray), selected (green tint + primary text/icon), focused (black ring), and disabled."
+>
+  <dga-menu aria-label="Item states" style="min-width: 280px;">
+    <dga-menu-group>
+      <dga-menu-item icon="file-01">Default</dga-menu-item>
+      <dga-menu-item icon="file-01" style="background-color: var(--gray-100);">Hover</dga-menu-item>
+      <dga-menu-item icon="file-01" style="background-color: var(--gray-200);">Pressed</dga-menu-item>
+      <dga-menu-item icon="file-01" selected>Selected</dga-menu-item>
+      <dga-menu-item icon="file-01" style="border-color: var(--border-black);">Focused</dga-menu-item>
+      <dga-menu-item icon="file-01" disabled>Disabled</dga-menu-item>
+    </dga-menu-group>
+  </dga-menu>
+</demo-showcase>
+
+<demo-showcase
+  heading="Trailing Elements"
+  description="Items can carry a trailing count text, icon, tag, or switch — reusing the existing Tag component for the tag variant."
+>
+  <dga-menu aria-label="Trailing elements" style="min-width: 300px;">
+    <dga-menu-group>
+      <dga-menu-item icon="inbox" trailText="+99">Count text</dga-menu-item>
+      <dga-menu-item icon="folder-01">
+        Submenu arrow
+        <span dgaMenuTrailIcon>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M5 10h10M11 6l4 4-4 4" />
+          </svg>
+        </span>
+      </dga-menu-item>
+      <dga-menu-item icon="tag-01">
+        With a tag
+        <span dgaMenuTrail><dga-tag variant="success" size="sm">New</dga-tag></span>
+      </dga-menu-item>
+      <dga-menu-item icon="notification-01">
+        With a switch
+        <dga-menu-switch aria-label="With a switch" [(checked)]="trailSwitch" />
+      </dga-menu-item>
+    </dga-menu-group>
+  </dga-menu>
+</demo-showcase>
+
+<demo-showcase
+  heading="Grouped Menu"
+  description="Multiple groups, each with its own label, separated by dividers — the full composition from the Figma Menu frame."
+>
+  <dga-menu aria-label="Grouped menu" style="min-width: 280px;">
+    <dga-menu-group label="Group label" selectable [(value)]="groupedValue">
+      <dga-menu-item icon="file-01" value="a">Item Label</dga-menu-item>
+      <dga-menu-item icon="file-01" value="b">Item Label</dga-menu-item>
+    </dga-menu-group>
+    <dga-menu-group label="Group label">
+      <dga-menu-item icon="notification-01">
+        Notifications
+        <dga-menu-switch aria-label="Notifications" [(checked)]="notifications" />
+      </dga-menu-item>
+      <dga-menu-item icon="moon-02">
+        Dark mode
+        <dga-menu-switch aria-label="Dark mode" [(checked)]="darkMode" />
+      </dga-menu-item>
+    </dga-menu-group>
+  </dga-menu>
+</demo-showcase>
+
+<demo-showcase
+  heading="Open on Click"
+  description="The real behavior: a trigger opens the menu as a dropdown. Click the trigger to toggle; click outside or press Esc to close."
+  align="flex-start"
+>
+  <div style="min-height: 232px;">
+    <dga-menu-anchor [(open)]="open">
+      <button dga-button variant="secondary-outline" type="button" dgaMenuTrigger>
+        Options
+        <span class="icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M5 8l5 5 5-5" />
+          </svg>
+        </span>
+      </button>
+      <dga-menu aria-label="Options">
+        <dga-menu-group>
+          <dga-menu-item icon="view">View details</dga-menu-item>
+          <dga-menu-item icon="edit-01">Edit</dga-menu-item>
+          <dga-menu-item icon="copy-01" trailText="⌘D">Duplicate</dga-menu-item>
+        </dga-menu-group>
+        <dga-menu-group>
+          <dga-menu-item icon="delete-02">Delete</dga-menu-item>
+        </dga-menu-group>
+      </dga-menu>
+    </dga-menu-anchor>
+  </div>
+</demo-showcase>
+
+<demo-showcase
+  heading="RTL Support"
+  description="Arabic and other right-to-left layouts mirror the menu: the leading icon moves to the right, the label aligns right, and trailing elements move to the left."
+  subtle
+>
+  <div dir="rtl">
+    <dga-menu rtl dir="rtl" aria-label="قائمة" style="min-width: 280px;">
+      <dga-menu-group label="عنوان مجموعة" selectable [(value)]="rtlValue">
+        <dga-menu-item icon="file-01" value="a">نص العنصر</dga-menu-item>
+        <dga-menu-item icon="file-01" value="b">
+          نص العنصر
+          <span dgaMenuTrail><dga-tag variant="neutral" size="sm">وسم</dga-tag></span>
+        </dga-menu-item>
+        <dga-menu-item icon="notification-01" value="c">
+          نص العنصر
+          <dga-menu-switch aria-label="نص العنصر" [(checked)]="rtlSwitch" />
+        </dga-menu-item>
+      </dga-menu-group>
+    </dga-menu>
+  </div>
+</demo-showcase>

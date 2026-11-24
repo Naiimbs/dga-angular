@@ -1,0 +1,9 @@
+/* @dga/ui - core stylesheet. Add to your app's global styles:
+   "styles": ["node_modules/@dga/ui/styles/dga.css"]
+   Order matters: theme scales, then semantic tokens, then reset, then dark mode. */
+@import url("./utilities/DGATheme.css");
+@import url("./css/tokens.css");
+@import url("./css/navigation-tokens.css");
+@import url("./css/reset.css");
+@import url("./utilities/accessibility.css");
+@import url("./css/dark-mode.css");

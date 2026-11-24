@@ -1,0 +1,172 @@
+<!-- Digital Stamp Banner -->
+<dga-digital-stamp
+  [text]="c().stamp.text"
+  [toggleLabel]="c().stamp.toggle"
+  [domainTitle]="c().stamp.domainTitle"
+  [domainDescription]="c().stamp.domainDescription"
+  [httpsTitle]="c().stamp.httpsTitle"
+  [httpsDescription]="c().stamp.httpsDescription"
+  [registrationLabel]="c().stamp.registrationLabel"
+/>
+
+<!-- Navigation Header -->
+<dga-nav-header
+  [actions]="c().actions"
+  [logoText]="c().logo"
+  [menuLabel]="c().menuLabel"
+  [openMenuLabel]="c().openMenu"
+  [closeMenuLabel]="c().closeMenu"
+/>
+
+<!-- Service Tabs -->
+<dga-service-tabs [tabs]="c().tabs" [(active)]="activeTab" [label]="c().tabsLabel" />
+
+<!-- Main Content -->
+<dga-form-template [heading]="c().title" [description]="c().description" [requiredInfo]="c().requiredInfo">
+  <!-- Progress Indicator (Vertical) -->
+  <dga-progress-indicator
+    dgaFormTemplateSteps
+    orientation="vertical"
+    [steps]="c().steps"
+    [(current)]="step"
+    [ariaLabel]="c().stepsLabel"
+    [stepLabel]="c().stepLabel"
+  />
+
+  <dga-breadcrumbs dgaFormTemplateBreadcrumb [items]="c().breadcrumb" [aria-label]="c().breadcrumbLabel" />
+
+  <!-- Plain inputs -->
+  <dga-form-row>
+    <dga-text-input [label]="c().requiredLabel" [placeholder]="c().placeholder" required />
+    <dga-text-input [label]="c().optionalLabel" [placeholder]="c().placeholder" />
+  </dga-form-row>
+
+  <!-- With search icon -->
+  <dga-form-row>
+    <dga-text-input [label]="c().requiredLabel" [placeholder]="c().placeholder" required trailingIcon="search-01" />
+    <dga-text-input [label]="c().optionalLabel" [placeholder]="c().placeholder" trailingIcon="search-01" />
+  </dga-form-row>
+
+  @if (full()) {
+    <!-- With dropdown -->
+    <dga-form-row>
+      <dga-dropdown
+        [label]="c().requiredLabel"
+        [placeholder]="c().placeholder"
+        [options]="c().options"
+        [(value)]="dropdownA"
+      />
+      <dga-dropdown
+        [label]="c().optionalLabel"
+        [placeholder]="c().placeholder"
+        [options]="c().options"
+        [(value)]="dropdownB"
+      />
+    </dga-form-row>
+
+    <dga-form-row>
+      <dga-text-input [label]="c().requiredLabel" [placeholder]="c().placeholder" required />
+      <dga-text-input [label]="c().optionalLabel" [placeholder]="c().placeholder" />
+    </dga-form-row>
+
+    <!-- With helper text -->
+    <dga-form-row>
+      <dga-text-input [label]="c().requiredLabel" [placeholder]="c().placeholder" required [helperText]="c().helper" />
+      <dga-text-input [label]="c().optionalLabel" [placeholder]="c().placeholder" [helperText]="c().helper" />
+    </dga-form-row>
+  }
+
+  <!-- Error state -->
+  <dga-form-row>
+    <dga-text-input
+      [label]="c().requiredLabel"
+      [placeholder]="c().placeholder"
+      required
+      error
+      [helperText]="c().helper"
+    />
+    <dga-text-input [label]="c().optionalLabel" [placeholder]="c().placeholder" error [helperText]="c().helper" />
+  </dga-form-row>
+
+  @if (full()) {
+    <dga-form-row>
+      <dga-text-input [label]="c().requiredLabel" [placeholder]="c().placeholder" required />
+      <dga-text-input [label]="c().optionalLabel" [placeholder]="c().placeholder" />
+    </dga-form-row>
+  }
+
+  <!-- Textarea -->
+  <dga-form-row>
+    <dga-textarea
+      [label]="c().descriptionLabel"
+      [placeholder]="c().descriptionPlaceholder"
+      [rows]="4"
+      required
+      [helperText]="c().descriptionHelper"
+      [helperIcon]="false"
+    />
+    <dga-textarea [label]="c().notesLabel" [placeholder]="c().notesPlaceholder" [rows]="4" />
+  </dga-form-row>
+
+  <!-- Radio group -->
+  <dga-form-row>
+    <div>
+      <p
+        class="text-input__label text-input__label--required"
+        style="margin: 0 0 var(--spacing-xs) 0;"
+        [id]="uid + '-request'"
+      >
+        {{ c().requestLabel }}
+      </p>
+      <dga-radio-group [(value)]="request" [ariaLabelledby]="uid + '-request'" [name]="uid + '-request-type'" required>
+        @for (option of c().requestOptions; track option.value) {
+          <dga-radio [value]="option.value" [label]="option.label" [helperText]="option.helper ?? ''" />
+        }
+      </dga-radio-group>
+    </div>
+  </dga-form-row>
+
+  <!-- Checkbox group -->
+  <dga-form-row>
+    <div>
+      <p class="text-input__label" style="margin: 0 0 var(--spacing-xs) 0;" [id]="uid + '-docs'">
+        {{ c().docsLabel }}
+      </p>
+      <dga-checkbox-group [(value)]="docs" [ariaLabelledby]="uid + '-docs'" [name]="uid + '-docs'">
+        @for (option of c().docOptions; track option.value) {
+          <dga-checkbox [value]="option.value" [label]="option.label" />
+        }
+      </dga-checkbox-group>
+    </div>
+  </dga-form-row>
+
+  <!-- Terms checkbox -->
+  <dga-form-row>
+    <dga-checkbox [(checked)]="terms" [label]="c().termsLabel" [helperText]="c().termsHelper" [name]="uid + '-terms'" />
+  </dga-form-row>
+
+  <!-- Form Actions -->
+  <ng-container dgaFormTemplateActions>
+    <button dga-button type="button" variant="secondary-outline" (click)="back()">{{ c().back }}</button>
+    <button dga-button type="button" (click)="next()">{{ c().next }}</button>
+  </ng-container>
+</dga-form-template>
+
+<!-- Feedback Section -->
+<dga-form-feedback [question]="c().feedbackQuestion" [stats]="c().feedbackStats">
+  <button dga-button type="button">{{ c().yes }}</button>
+  <button dga-button type="button">{{ c().no }}</button>
+</dga-form-feedback>
+
+<!-- Footer -->
+<dga-footer
+  [groups]="c().footer.groups"
+  [socialTitle]="c().footer.socialTitle"
+  [socialLinks]="c().footer.social"
+  [accessibilityTitle]="c().footer.accessibilityTitle"
+  [accessibilityTools]="c().footer.tools"
+  [legalLinks]="c().footer.legalLinks"
+  [legalCaption]="c().footer.caption"
+  [extraLinks]="c().footer.extraLinks"
+  [logos]="c().footer.logos"
+/>

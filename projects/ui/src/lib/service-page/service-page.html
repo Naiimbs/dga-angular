@@ -1,0 +1,52 @@
+@if (govbarSlot()) {
+  <div class="sp-govbar">
+    <div class="sp-govbar__inner">
+      <ng-content select="[dgaServicePageGovbar]" />
+    </div>
+  </div>
+}
+<ng-content select="[dgaServicePageHeader]" />
+@if (breadcrumbSlot()) {
+  <div class="sp-breadcrumb-row">
+    <ng-content select="[dgaServicePageBreadcrumb]" />
+  </div>
+}
+<main class="sp-main">
+  <section class="sp-details">
+    <ng-content />
+  </section>
+  @if (asideSlot()) {
+    <aside class="sp-aside" [attr.aria-label]="asideLabel() || null">
+      <div class="sp-aside__card">
+        <ng-content select="[dgaServicePageAside]" />
+      </div>
+    </aside>
+  }
+</main>
+@if (relatedSlot()) {
+  <section class="sp-related" [attr.aria-label]="relatedLabel() || null">
+    <div class="sp-related__inner">
+      <ng-content select="[dgaServicePageRelated]" />
+    </div>
+  </section>
+}
+@if (commentsSlot()) {
+  <section class="sp-comments-wrap">
+    <ng-content select="[dgaServicePageComments]" />
+  </section>
+}
+@if (ratingSlot()) {
+  <section class="sp-ratingbar" [attr.aria-label]="ratingLabel() || null">
+    <div class="sp-ratingbar__inner">
+      <ng-content select="[dgaServicePageRating]" />
+    </div>
+  </section>
+}
+@if (usefulSlot()) {
+  <section class="sp-useful" [attr.aria-label]="usefulLabel() || null">
+    <div class="sp-useful__inner">
+      <ng-content select="[dgaServicePageUseful]" />
+    </div>
+  </section>
+}
+<ng-content select="[dgaServicePageFooter]" />
